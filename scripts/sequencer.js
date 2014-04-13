@@ -91,9 +91,11 @@ function playSong() {
     }
     setTimeout(function() {
       if(event.subtype === 'noteOn') {
+        $('.keys li[pitch="'+event.pitch+'"] .key').addClass('active');
         MIDI.noteOn(event.channel, event.pitch, event.velocity, 0);
       }
       else if(event.subtype === 'noteOff') {
+        $('.keys li[pitch="'+event.pitch+'"] .key').removeClass('active');
         MIDI.noteOff(event.channel, event.pitch, 0);
       }
       if(i<allEvents.length-1)
