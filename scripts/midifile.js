@@ -11,6 +11,7 @@ function uploadMidiFile(file) {
     reader.onload = function(e) {
       var buffer = e.target.result;
       song = midiConverter.midiToJson(buffer);
+      drawSong(song);
       updateDownloadLink();
     };
     reader.readAsBinaryString(file);

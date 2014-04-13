@@ -8,20 +8,38 @@ body {
 
 .keys {
   list-style-type: none;
+  width: 1000px;
 }
 .keys li {
+  border-top: 1px solid #444444;
+  position: relative;
+}
+.keys li:last-child {
+  border-bottom: 1px solid #444444;
+}
+.keys li .key {
+  height: 20px;
+  display: inline-block;
+  border-right: 1px solid #444444;
+  border-left: 1px solid #444444;
   width: 60px;
   text-align: right;
   padding: 2px;
   background-color: #fafafa;
   color: #444444;
-  border: 1px solid black;
-  border-bottom: none;
 }
-.keys li:last-child {
-  border-bottom: 1px solid black;
-}
-.keys li.sharp {
+.keys li .key.sharp {
   background-color: #444444;
   color: #fafafa;
+}
+.keys li .notes {
+  display: inline-block;
+  position: absolute;
+}
+.keys li .notes .note {
+  position: absolute;
+  background-color: #5298DE;
+  height: 20px;
+  margin-top: 2px;
+  border-radius: 3px;
 }
