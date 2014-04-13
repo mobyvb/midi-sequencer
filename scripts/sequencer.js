@@ -1,4 +1,8 @@
 var keys = $('.keys');
+var allNotes = [];
+var allEvents = [];
+var pxPerMillis = 0.04521122685185185;
+var endTime = 0;
 
 for(var pitch=108; pitch>=21; pitch--) { // A0 to C8
   var note = noteFromMidiPitch(pitch);
@@ -14,10 +18,8 @@ function noteFromMidiPitch(p) {
   return note+octave;
 }
 
-function drawSong(song) {
-  var allNotes = [];
+function drawSong() {
   var openNotes = [];
-  var endTime = 0;
   song.tracks.forEach(function(track) {
     var time = 0;
     track.forEach(function(event) {
@@ -39,14 +41,18 @@ function drawSong(song) {
         };
         allNotes.push(newNote);
       }
+      allEvents.push({
+        subtype:event.subtype,
+        pitch:event.noteNumber,
+        channel:event.channel,
+        velocity:event.velocity,
+        time:time
+      });
     });
     if(endTime<time) endTime = time;
   });
 
-  console.log(JSON.stringify(allNotes, null, 4));
-  console.log('end time: ' + endTime);
-
-  var pxPerMillis = 10000/endTime;
+  // var pxPerMillis = 10000/endTime;
   allNotes.forEach(function(note) {
     var notePos = ~~(pxPerMillis*note.startTime);
     var noteWidth = ~~(pxPerMillis*note.deltaTime);
@@ -54,4 +60,40 @@ function drawSong(song) {
     var noteHtml = '<div class="note" style="'+noteStyle+'"></div>';
     $('.keys li[pitch="'+note.pitch+'"] .notes').append(noteHtml);
   });
+  allEvents = allEvents.sort(function(a, b) {
+    return a.time-b.time;
+  });
+}
+
+function playSong() {
+  var time = 0;
+  var currentTransform = 0;
+  MIDI.loadPlugin({
+    soundfontUrl: "./soundfont/",
+    instrument: 0,
+    callback: function() {
+      $('.notes').css('transform', 'translate(-10000px)');
+      $('.notes').css('transition', 'linear all ' + endTime + 'ms');
+      nextEvent(0, 0, Date.now());
+    }
+  });
+
+  function nextEvent(i, prevTime, startTime) {
+    var event = allEvents[i];
+    var time = event.time;
+    var dt = Date.now()-startTime;
+    if(dt > time) {
+      time -= dt-time; // adjust for time delay
+    }
+    setTimeout(function() {
+      if(event.subtype === 'noteOn') {
+        MIDI.noteOn(event.channel, event.pitch, event.velocity, 0);
+      }
+      else if(event.subtype === 'noteOff') {
+        MIDI.noteOff(event.channel, event.pitch, 0);
+      }
+      if(i<allEvents.length-1)
+        nextEvent(i+1, event.time, startTime);
+    }, time-prevTime);
+  }
 }
