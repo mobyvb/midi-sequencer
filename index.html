@@ -23,8 +23,11 @@
   </head>
 
   <body>
-    <div id='midi-upload'>Upload</div>
-    <a id='midi-download' download='song.mid'>Download</a>
+    <div class='toolbar'>
+      <div class='button' id='play-song' onclick='playSong()'>Play</div>
+      <div class='button' id='midi-upload'>Upload</div>
+      <a class='button' id='midi-download' download='song.mid'>Download</a>
+    </div>
 
     <div id='sequencer'>
       <ul class='keys'></ul>

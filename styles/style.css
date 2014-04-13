@@ -1,5 +1,31 @@
 body {
   font-family: helvetica;
+  margin: 0;
+  overflow: hidden;
+}
+
+.toolbar {
+  background-color: #5298DE;
+  position: absolute;
+  top: 0;
+  height: 70px;
+  left: 0;
+  right: 0;
+}
+.toolbar .button {
+  background-color: #fafafa;
+  display: inline-block;
+  width: 200px;
+  font-size: 24px;
+  color: #444444;
+  text-decoration: none;
+  text-align: center;
+  border: 2px solid #444444;
+  cursor: pointer;
+  border-radius: 5px;
+  height: 40px;
+  padding-top: 8px;
+  margin: 10px;
 }
 
 .dz-preview {
@@ -7,8 +33,18 @@ body {
 }
 
 .keys {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
   list-style-type: none;
-  width: 1000px;
+  position: absolute;
+  top: 70px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 .keys li {
   border-top: 1px solid #444444;
@@ -18,6 +54,8 @@ body {
   border-bottom: 1px solid #444444;
 }
 .keys li .key {
+  position: relative;
+  z-index: 1;
   height: 20px;
   display: inline-block;
   border-right: 1px solid #444444;

@@ -10,6 +10,7 @@ for(var pitch=108; pitch>=21; pitch--) { // A0 to C8
   var keyHtml = '<div class="'+keyClass+'">'+note+'</div>';
   keys.append('<li pitch='+pitch+'>'+keyHtml+'<div class="notes"></div></li>');
 }
+keys.scrollTop(keys.offset().top + (keys.height() / 2));
 
 function noteFromMidiPitch(p) {
   var noteDict = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
@@ -19,6 +20,9 @@ function noteFromMidiPitch(p) {
 }
 
 function drawSong() {
+  allEvents = [];
+  allNotes = [];
+  endTime = 0;
   var openNotes = [];
   song.tracks.forEach(function(track) {
     var time = 0;
@@ -52,7 +56,7 @@ function drawSong() {
     if(endTime<time) endTime = time;
   });
 
-  // var pxPerMillis = 10000/endTime;
+  pxPerMillis = 10000/endTime;
   allNotes.forEach(function(note) {
     var notePos = ~~(pxPerMillis*note.startTime);
     var noteWidth = ~~(pxPerMillis*note.deltaTime);
