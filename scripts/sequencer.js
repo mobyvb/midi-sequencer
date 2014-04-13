@@ -1,36 +1,28 @@
-var midiUpload = new Dropzone('#midi-upload', { url: "/file/post"});
+var midiUpload = new Dropzone('#midi-upload', {url:'/', autoProcessQueue:false});
 var jsonFile = {};
 
 midiUpload.on('addedfile', function(file) {
-  console.log('file added');
-  upload(file);
+  uploadMidiFile(file);
 });
-var buffer = '';
-function upload(file) {
+
+function uploadMidiFile(file) {
   if (file) {
     var reader = new FileReader();
     reader.onload = function(e) {
-      buffer = e.target.result;
+      var buffer = e.target.result;
       var toJson = midiConverter.midiToJson(buffer);
       jsonFile = toJson;
+      updateDownloadLink();
     };
     reader.readAsBinaryString(file);
   }
 }
 
-function onDownload() {
+function updateDownloadLink() {
   var midi = midiConverter.jsonToMidi(jsonFile);
   var blob = new Blob([stringToArrayBuffer(midi)], {type:'audio/midi'});
   url = window.URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  document.body.appendChild(a);
-  a.style = 'display: none';
-  a.href = url;
-  a.download = 'somethingnew.mid';
-  a.click();
-  window.URL.revokeObjectURL(url);
-  debugger;
-  document.location = 'data:Application/octet-stream,' + encodeURIComponent(midi);
+  $('#midi-download').attr('href', url);
 }
 
 function stringToArrayBuffer(string) {

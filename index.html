@@ -5,6 +5,8 @@
     <meta charset='utf-8'>
     <title>MIDI Seqeuncer</title>
 
+    <link rel='stylesheet' href='styles/style.css'>
+
     <script src='lib/jquery.min.js'></script>
     <script src='lib/instruments.js'></script>
     <script src='lib/jsmidgen.js'></script>
@@ -14,10 +16,8 @@
   </head>
 
   <body>
-    <form action='/'
-      id='midi-upload'>ASDFASDFS</form>
-      <a href='javascript:onDownload();'>Download</a>
-
-      <script src='scripts/sequencer.js'></script>
+    <div id='midi-upload'>Upload</div>
+    <a id='midi-download' download='song.mid'>Download</a>
+    <script src='scripts/sequencer.js'></script>
   </body>
 </html>
