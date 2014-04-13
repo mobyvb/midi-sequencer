@@ -1,3 +1,27 @@
+body {
+  font-family: helvetica;
+}
+
 .dz-preview {
-  display: none
+  display: none;
+}
+
+.keys {
+  list-style-type: none;
+}
+.keys li {
+  width: 60px;
+  text-align: right;
+  padding: 2px;
+  background-color: #fafafa;
+  color: #444444;
+  border: 1px solid black;
+  border-bottom: none;
+}
+.keys li:last-child {
+  border-bottom: 1px solid black;
+}
+.keys li.sharp {
+  background-color: #444444;
+  color: #fafafa;
 }
