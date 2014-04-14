@@ -28,7 +28,7 @@ function drawSong() {
   song.tracks.forEach(function(track) {
     var time = 0;
     track.forEach(function(event) {
-      time += event.deltaTime*millisPerTick;
+      time += parseInt(event.deltaTime*millisPerTick);
       if(event.subtype === 'noteOn') {
         var pitch = event.noteNumber;
         openNotes[pitch] = time;
