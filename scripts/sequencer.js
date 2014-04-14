@@ -70,6 +70,14 @@ function drawSong() {
     $('.keys li[pitch="'+note.pitch+'"] .notes').append(noteHtml);
   });
   allEvents = allEvents.sort(function(a, b) {
+    if(a.time === b.time) {
+      if(a.subtype === 'noteOff') {
+        return -1;
+      }
+      else {
+        return 1;
+      }
+    }
     return a.time-b.time;
   });
 }
