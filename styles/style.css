@@ -66,12 +66,12 @@ body {
   background-color: #fafafa;
   color: #444444;
 }
-.keys li .key.active {
-  background-color: #5298DE;
-}
 .keys li .key.sharp {
   background-color: #444444;
   color: #fafafa;
+}
+.keys li .key.active, .keys li .key.sharp.active {
+  background-color: #5298DE;
 }
 .keys li .notes {
   display: inline-block;
