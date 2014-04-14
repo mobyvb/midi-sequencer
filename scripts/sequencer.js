@@ -28,7 +28,7 @@ function drawSong() {
   song.tracks.forEach(function(track) {
     var time = 0;
     track.forEach(function(event) {
-      time += event.deltaTime;
+      time += event.deltaTime*millisPerTick;
       if(event.subtype === 'noteOn') {
         var pitch = event.noteNumber;
         openNotes[pitch] = time;
@@ -82,7 +82,7 @@ function playSong() {
     instrument: 0,
     callback: function() {
       $('.notes').css('transform', 'translate(-10000px)');
-      $('.notes').css('transition', 'linear all ' + endTime*millisPerTick + 'ms');
+      $('.notes').css('transition', 'linear all ' + endTime + 'ms');
       nextEvent(0, 0, Date.now());
     }
   });
@@ -105,6 +105,6 @@ function playSong() {
       }
       if(i<allEvents.length-1)
         nextEvent(i+1, event.time, startTime);
-    }, (time-prevTime)*millisPerTick);
+    }, time-prevTime);
   }
 }
