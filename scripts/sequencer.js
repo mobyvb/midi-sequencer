@@ -1,7 +1,8 @@
 var keys = $('.keys');
 var allNotes = [];
 var allEvents = [];
-var pxPerMillis = 0.04521122685185185;
+var pxPerMillis = 0;
+var millisPerTick = 0;
 var endTime = 0;
 
 for(var pitch=108; pitch>=21; pitch--) { // A0 to C8
@@ -45,6 +46,9 @@ function drawSong() {
         };
         allNotes.push(newNote);
       }
+      else if(event.subtype === 'setTempo') {
+        millisPerTick = event.microsecondsPerBeat/(1000*song.header.ticksPerBeat);
+      }
       allEvents.push({
         subtype:event.subtype,
         pitch:event.noteNumber,
@@ -78,7 +82,7 @@ function playSong() {
     instrument: 0,
     callback: function() {
       $('.notes').css('transform', 'translate(-10000px)');
-      $('.notes').css('transition', 'linear all ' + endTime + 'ms');
+      $('.notes').css('transition', 'linear all ' + endTime*millisPerTick + 'ms');
       nextEvent(0, 0, Date.now());
     }
   });
@@ -101,6 +105,6 @@ function playSong() {
       }
       if(i<allEvents.length-1)
         nextEvent(i+1, event.time, startTime);
-    }, time-prevTime);
+    }, (time-prevTime)*millisPerTick);
   }
 }
