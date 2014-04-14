@@ -57,6 +57,7 @@ function drawSong() {
   });
 
   pxPerMillis = 10000/endTime;
+  $('.keys li .notes').html('');
   allNotes.forEach(function(note) {
     var notePos = ~~(pxPerMillis*note.startTime);
     var noteWidth = ~~(pxPerMillis*note.deltaTime);
