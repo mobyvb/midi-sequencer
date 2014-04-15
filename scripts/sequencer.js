@@ -47,6 +47,7 @@ function drawSong() {
         allNotes.push(newNote);
       }
       else if(event.subtype === 'setTempo') {
+        // FIXME account for multiple changes in tempo throughout song
         millisPerTick = event.microsecondsPerBeat/(1000*song.header.ticksPerBeat);
       }
       allEvents.push({
