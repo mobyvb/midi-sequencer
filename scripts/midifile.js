@@ -51,6 +51,7 @@ function uploadMidiFile(file) {
 function updateDownloadLink() {
   var midi = midiConverter.jsonToMidi(song);
   var blob = new Blob([stringToArrayBuffer(midi)], {type:'audio/midi'});
+  if(window.webkitURL) window.URL = window.webkitURL;
   url = window.URL.createObjectURL(blob);
   $('#midi-download').attr('href', url);
 }
