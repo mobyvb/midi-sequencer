@@ -1,5 +1,35 @@
 var midiUpload = new Dropzone('#midi-upload', {url:'/', autoProcessQueue:false});
 var song = {};
+Blob = (function() {
+  var nativeBlob = Blob;
+
+  // Add unprefixed slice() method.
+  if (Blob.prototype.webkitSlice) {
+    Blob.prototype.slice = Blob.prototype.webkitSlice;
+  }
+  else if (Blob.prototype.mozSlice) {
+    Blob.prototype.slice = Blob.prototype.mozSlice;
+  }
+
+  // Temporarily replace Blob() constructor with one that checks support.
+  return function(parts, properties) {
+    try {
+      // Restore native Blob() constructor, so this check is only evaluated once.
+      Blob = nativeBlob;
+      return new Blob(parts || [], properties || {});
+    }
+    catch (e) {
+      // If construction fails provide one that uses BlobBuilder.
+      Blob = function (parts, properties) {
+        var bb = new (WebKitBlobBuilder || MozBlobBuilder), i;
+        for (i in parts) {
+          bb.append(parts[i]);
+        }
+        return bb.getBlob(properties && properties.type ? properties.type : undefined);
+      };
+    }
+  };
+}());
 
 midiUpload.on('addedfile', function(file) {
   uploadMidiFile(file);
@@ -19,12 +49,10 @@ function uploadMidiFile(file) {
 }
 
 function updateDownloadLink() {
-  if(Blob) {
-    var midi = midiConverter.jsonToMidi(song);
-    var blob = new Blob([stringToArrayBuffer(midi)], {type:'audio/midi'});
-    url = window.URL.createObjectURL(blob);
-    $('#midi-download').attr('href', url);
-  }
+  var midi = midiConverter.jsonToMidi(song);
+  var blob = new Blob([stringToArrayBuffer(midi)], {type:'audio/midi'});
+  url = window.URL.createObjectURL(blob);
+  $('#midi-download').attr('href', url);
 }
 
 function stringToArrayBuffer(string) {
