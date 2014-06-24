@@ -12,7 +12,9 @@ function uploadMidiFile(file) {
       var buffer = e.target.result;
       song = midiConverter.midiToJson(buffer);
       drawSong(song);
-      updateDownloadLink();
+      if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        updateDownloadLink();
+      }
     };
     reader.readAsBinaryString(file);
   }
