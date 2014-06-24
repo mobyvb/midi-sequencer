@@ -12,19 +12,19 @@ function uploadMidiFile(file) {
       var buffer = e.target.result;
       song = midiConverter.midiToJson(buffer);
       drawSong(song);
-      if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-        updateDownloadLink();
-      }
+      updateDownloadLink();
     };
     reader.readAsBinaryString(file);
   }
 }
 
 function updateDownloadLink() {
-  var midi = midiConverter.jsonToMidi(song);
-  var blob = new Blob([stringToArrayBuffer(midi)], {type:'audio/midi'});
-  url = window.URL.createObjectURL(blob);
-  $('#midi-download').attr('href', url);
+  if(Blob) {
+    var midi = midiConverter.jsonToMidi(song);
+    var blob = new Blob([stringToArrayBuffer(midi)], {type:'audio/midi'});
+    url = window.URL.createObjectURL(blob);
+    $('#midi-download').attr('href', url);
+  }
 }
 
 function stringToArrayBuffer(string) {
